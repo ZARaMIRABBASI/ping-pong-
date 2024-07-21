@@ -1,0 +1,122 @@
+#start:
+import turtle
+#emtiaz
+score_a = 0
+score_b = 0
+#sakht safhe
+screen = turtle.Screen()
+screen.title("Pong")
+screen.bgcolor("black")
+screen.setup(width=800, height=600)
+screen.tracer(0)
+#player 1 :
+player_a = turtle.Turtle()
+player_a.speed(0)
+player_a.shape("square")
+player_a.color("white")
+player_a.shapesize(stretch_wid=5, stretch_len=1)
+player_a.penup()
+player_a.goto(-350, 0)
+#player 2:
+player_b = turtle.Turtle()
+player_b.speed(0)
+player_b.shape("square")
+player_b.color("white")
+player_b.shapesize(stretch_wid=5, stretch_len=1)
+player_b.penup()
+player_b.goto(350, 0)
+#ball:
+
+ball = turtle.Turtle()
+ball.speed(0)
+ball.shape("circle")
+ball.color("white")
+ball.penup()
+ball.goto(0, 0)
+ball.dx = 0.1
+ball.dy = -0.1
+#pen setting:
+
+
+pen = turtle.Turtle()
+pen.speed(0)
+pen.color("white")
+pen.penup()
+pen.hideturtle()
+pen.goto(0, 260)
+pen.write("Player A: 0  Player B: 0", align="center", font=("Courier", 20, "normal"))
+#shart haye harekat:
+def player_a_up():
+    y = player_a.ycor()
+    y += 30
+    player_a.sety(y)
+def player_a_down():
+    y = player_a.ycor()
+    y -= 30
+    player_a.sety(y)
+def player_b_up():
+    y = player_b.ycor()
+    y += 30
+    player_b.sety(y)
+def player_b_down():
+    y = player_b.ycor()
+    y -= 30
+    player_b.sety(y)
+
+#screen rules:
+screen.listen()
+screen.onkeypress(player_a_up, "w")
+screen.onkeypress(player_a_down, "s")
+screen.onkeypress(player_b_up, "Up")
+screen.onkeypress(player_b_down, "Down")
+#game setting:
+
+while True:
+    screen.update()
+
+    #ball:
+    ball.setx(ball.xcor() + ball.dx)
+    ball.sety(ball.ycor() + ball.dy)
+
+    #check:
+    if ball.ycor() > 280:
+        ball.sety(280)
+        ball.dy *= -1
+
+    if ball.ycor() < -280:
+        ball.sety(-280)
+        ball.dy *= -1
+
+    #left and right
+    if (ball.xcor() < -340 and ball.xcor() > -350) and (player_a.ycor() + 50 > ball.ycor() > player_a.ycor() - 50):
+        score_a += 1
+        pen.clear()
+        pen.write("Player A: {} Player B: {}".format(score_a, score_b), align="center", font=("Courier", 20, "normal"))
+    if ball.xcor() > 380:
+        score_a = 0
+        pen.clear()
+        pen.write("Player A: {} Player B: {}".format(score_a, score_b), align="center", font=("Courier", 20, "normal"))
+        ball.goto(0, 0)
+        ball.dx *= -1
+
+
+    if (ball.xcor() > 340 and ball.xcor() < 350) and (player_b.ycor() + 50 > ball.ycor() > player_b.ycor() - 50):
+        score_b += 1
+        pen.clear()
+        pen.write("Player A: {} Player B: {}".format(score_a, score_b), align="center", font=("Courier", 20, "normal"))
+    if ball.xcor() < -380:
+        score_b = 0
+        pen.clear()
+        pen.write("Player A: {} Player B: {}".format(score_a, score_b), align="center", font=("Courier", 20, "normal"))
+        ball.goto(0, 0)
+        ball.dx *= -1
+
+
+    # player and ball:
+    if (ball.xcor() > 340 and ball.xcor() < 350) and (player_b.ycor() + 50 > ball.ycor() > player_b.ycor() - 50):
+        ball.setx(340)
+        ball.dx *= -1
+
+    if (ball.xcor() < -340 and ball.xcor() > -350) and (player_a.ycor() + 50 > ball.ycor() > player_a.ycor() - 50):
+        ball.setx(-340)
+        ball.dx *= -1
